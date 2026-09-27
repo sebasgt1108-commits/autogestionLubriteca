@@ -230,6 +230,8 @@ td strong { font-family:var(--font-display);font-weight:700;font-size:0.82rem; }
 .btn-wa:hover { background:#16a34a;color:white;border-color:#16a34a; }
 .btn-wa-auth { background:#eff6ff;color:#1e40af;border-color:#93c5fd; }
 .btn-wa-auth:hover { background:#1e40af;color:white;border-color:#1e40af; }
+.btn-wa-disabled { background:#f3f4f6;color:#9ca3af;border-color:#e5e7eb;cursor:not-allowed;font-family:inherit; }
+.btn-wa-disabled:hover { background:#f3f4f6;color:#9ca3af;border-color:#e5e7eb; }
 .btn-auth-form { width:100%;justify-content:center;padding:11px 14px;font-size:0.78rem;font-weight:600; }
 .btn-chulo { width:24px;height:24px;border-radius:50%;border:2px solid #86efac;background:transparent;color:#86efac;font-size:0.75rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0; }
 .btn-chulo:hover { background:#16a34a;border-color:#16a34a;color:white;transform:scale(1.1); }

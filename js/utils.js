@@ -3,6 +3,18 @@ function limpiarTelefono(valor) {
   return String(valor || '').replace(/\D/g, '');
 }
 
+// Quita el prefijo de país 57 si el número quedó guardado con él (12 dígitos: 57 + 10)
+function normalizarTelefonoCO(valor) {
+  let t = limpiarTelefono(valor);
+  if (t.length === 12 && t.startsWith('57')) t = t.slice(2);
+  return t;
+}
+
+// Celular colombiano válido para WhatsApp: 10 dígitos que empiezan por 3
+function telefonoValidoWA(telefonoNormalizado) {
+  return telefonoNormalizado.length === 10 && telefonoNormalizado.startsWith('3');
+}
+
 function getHoy() { return new Date().toLocaleDateString('en-CA'); }
 function setFechaHoyEnInput(inputId) {
   const input = document.getElementById(inputId);

@@ -48,11 +48,20 @@ function buildBadge(fechaStr, eliminado = false, contactado = false) {
   return `<span class="badge-estado badge-ok">✓ OK — ${d}d</span>`;
 }
 
+// Rellena una plantilla de WhatsApp reemplazando {nombre} {placa} {servicio} {km}
+function llenarPlantillaWA(plantilla, datos = {}) {
+  return plantilla
+    .replace(/\{nombre\}/g, datos.nombre || '')
+    .replace(/\{placa\}/g, datos.placa || '')
+    .replace(/\{servicio\}/g, datos.servicio || '')
+    .replace(/\{km\}/g, datos.km || '');
+}
+
 // ═══════════ CONSTRUIR FILA ═══════════
 function construirFila(c, citas = []) {
   const nombre = String(c.name || '');
   const telefono = String(c.telephone || '');
-  const telefonoLimpio = limpiarTelefono(telefono);
+  const telefonoNormalizado = normalizarTelefonoCO(telefono);
   const placa = String(c.plate || '').toUpperCase().trim();
   const categoria = String(c.service || 'Servicio General');
   const fechaActual = String(c.entryDate || '');
@@ -68,31 +77,12 @@ function construirFila(c, citas = []) {
   const reservaConcluidaCliente = normalizarBooleanConcluido(c.reservationConcluded);
   const cl = marcado ? 'fila-contactado' : esHoy ? 'fila-hoy' : esV ? 'fila-vencido' : '';
 
-  const msgConKm = `Hola, ${nombre}
-En Lubri Repuestos Yumbo JRC SAS queremos recordarte que tu vehículo de placa ${placa} ya está próximo a su próximo cambio de aceite.
+  // elige cuál plantilla usar según si tienes km o no, y la rellena con los datos del cliente
+  const waTxt = llenarPlantillaWA(kmEsPunto ? WA_RECORDATORIO_SIN_KM : WA_RECORDATORIO_CON_KM, {
+    nombre, placa, servicio: categoria, km
+  });
 
-Según nuestro registro, el próximo cambio está previsto aproximadamente a los ${km} km.
-
-¿Ya es momento de hacer tu cambio? Puedes agendar tu cita directamente con nosotros o, si aún no es el momento, puedes reprogramar este recordatorio para recibirlo más adelante.
-
-Lubri Repuestos Yumbo JRC SAS
-Cuidamos la vida de tu motor.`;
-
-  const msgSinKm = `Hola, ${nombre}
-En Lubri Repuestos Yumbo JRC SAS queremos recordarte que tu vehículo de placa ${placa} ya está próximo a su cambio de aceite.
-
-Este recordatorio se genera teniendo en cuenta el tiempo transcurrido desde tu último servicio. Te recomendamos revisar el kilometraje actual de tu vehículo y compararlo con el kilometraje indicado para tu próximo cambio, ya sea en tu tarjeta de mantenimiento, factura o registro del último servicio.
-
-Puedes agendar tu cita directamente con nosotros o, si todavía no es el momento, reprogramar este recordatorio para recibirlo más adelante.
-
-Lubri Repuestos Yumbo JRC SAS
-Cuidamos la vida de tu motor.`;
-
-  // elige cuál mensaje usar según si tienes km o no
-  const waTxt = kmEsPunto ? msgSinKm : msgConKm;
-
-  console.log('waTxt:', waTxt);
-  console.log('encoded:', encodeURIComponent(waTxt));
+  const telefonoValido = telefonoValidoWA(telefonoNormalizado);
   const citasCliente = citas.filter(ct => ct.customerId == id);
   const citaActiva = citasCliente.find(ct => !normalizarBooleanConcluido(ct.wasConcluded));
   const citaConcluida = citasCliente.find(ct => normalizarBooleanConcluido(ct.wasConcluded));
@@ -106,6 +96,10 @@ Cuidamos la vida de tu motor.`;
       : citaConcluida
         ? `<button class="btn-reservar-cita btn-concluido-reservar" onclick="abrirModalReservar('${idSafe}','${placa}','${nombreSafe}','${telefono}','${categoriaSafe}')">✓ Concluido · Reservar</button>`
         : `<button class="btn-reservar-cita" onclick="abrirModalReservar('${idSafe}','${placa}','${nombreSafe}','${telefono}','${categoriaSafe}')">📅 Reservar</button>`;
+
+  const btnWa = telefonoValido
+    ? `<a href="https://wa.me/57${telefonoNormalizado}?text=${encodeURIComponent(waTxt)}" target="_blank" class="btn-wa">📱 WhatsApp</a>`
+    : `<button class="btn-wa btn-wa-disabled" disabled title="Teléfono inválido">📱 Teléfono inválido</button>`;
 
   const tr = document.createElement('tr');
   if (cl) tr.classList.add(cl);
@@ -121,7 +115,7 @@ Cuidamos la vida de tu motor.`;
         <td>
             <div class="acciones">
                 <div class="btn-wa-wrap">
-<a href="https://wa.me/57${telefonoLimpio}?text=${encodeURIComponent(waTxt)}" target="_blank" class="btn-wa">📱 WhatsApp</a>
+${btnWa}
                     <button class="btn-chulo ${marcado ? 'marcado' : ''}" onclick="toggleContactado('${id}')" title="${marcado ? 'Contactado ✓' : 'Marcar contactado'}">✓</button>
                 </div>
                 <button class="btn-edit" onclick="abrirModalEditar('${id}')">✎ Editar</button>
