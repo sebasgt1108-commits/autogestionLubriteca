@@ -20,7 +20,7 @@ const ESPACIOS = {
 // ═══════════ PLANTILLAS WHATSAPP (RECORDATORIO) ═══════════
 // Placeholders disponibles: {nombre} {placa} {servicio} {km}
 const WA_RECORDATORIO_CON_KM = `Hola, {nombre}
-En Lubri Repuestos Yumbo JRC SAS queremos recordarte que tu vehículo de placa {placa} se acerca la fecha de su próximo cambio de {servicio}.
+En Lubri Repuestos Yumbo JRC SAS queremos recordarte que se acerca la fecha del próximo cambio de {servicio} de tu vehículo de placa {placa}.
 
 Según nuestro registro, el próximo cambio está previsto aproximadamente a los {km} km.
 
@@ -30,7 +30,7 @@ Lubri Repuestos Yumbo JRC SAS
 Cuidamos la vida de tu motor.`;
 
 const WA_RECORDATORIO_SIN_KM = `Hola, {nombre}
-En Lubri Repuestos Yumbo JRC SAS queremos recordarte que tu vehículo de placa {placa} se acerca la fecha de su próximo cambio de {servicio}.
+En Lubri Repuestos Yumbo JRC SAS queremos recordarte que se acerca la fecha del próximo cambio de {servicio} de tu vehículo de placa {placa}.
 
 Este recordatorio se genera teniendo en cuenta el tiempo transcurrido desde tu último servicio. Te recomendamos revisar el kilometraje actual de tu vehículo y compararlo con el kilometraje indicado para tu próximo cambio, ya sea en tu tarjeta de mantenimiento, factura o registro del último servicio.
 
