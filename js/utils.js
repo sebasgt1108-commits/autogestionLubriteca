@@ -15,6 +15,12 @@ function telefonoValidoWA(telefonoNormalizado) {
   return telefonoNormalizado.length === 10 && telefonoNormalizado.startsWith('3');
 }
 
+// El nombre se guarda en MAYÚSCULAS; para el saludo se usa solo el primer nombre, capitalizado
+function primerNombreCapitalizado(nombreCompleto) {
+  const primero = String(nombreCompleto || '').trim().split(/\s+/)[0] || '';
+  return primero.charAt(0).toUpperCase() + primero.slice(1).toLowerCase();
+}
+
 function getHoy() { return new Date().toLocaleDateString('en-CA'); }
 function setFechaHoyEnInput(inputId) {
   const input = document.getElementById(inputId);

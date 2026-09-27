@@ -79,7 +79,7 @@ function construirFila(c, citas = []) {
 
   // elige cuál plantilla usar según si tienes km o no, y la rellena con los datos del cliente
   const waTxt = llenarPlantillaWA(kmEsPunto ? WA_RECORDATORIO_SIN_KM : WA_RECORDATORIO_CON_KM, {
-    nombre, placa, servicio: categoria, km
+    nombre: primerNombreCapitalizado(nombre), placa, servicio: categoria, km
   });
 
   const telefonoValido = telefonoValidoWA(telefonoNormalizado);
