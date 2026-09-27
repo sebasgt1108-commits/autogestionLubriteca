@@ -32,6 +32,30 @@ function diasRestantes(fechaStr) {
 function fechaHoraActual() {
   return new Date().toLocaleString('es-CO', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
 }
+// Suma meses a una fecha "aaaa-mm-dd". Si el día no existe en el mes destino
+// (ej: 31 de enero + 1 mes), ajusta al último día de ese mes (28/29 de febrero).
+function sumarMesesAFecha(fechaStr, meses) {
+  const [y, m, d] = String(fechaStr).split('-').map(Number);
+  if (!y || !m || !d) return '';
+  const destino = new Date(y, m - 1 + Number(meses), 1);
+  const ultimoDiaDestino = new Date(destino.getFullYear(), destino.getMonth() + 1, 0).getDate();
+  destino.setDate(Math.min(d, ultimoDiaDestino));
+  const yyyy = destino.getFullYear();
+  const mm = String(destino.getMonth() + 1).padStart(2, '0');
+  const dd = String(destino.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+// Deja solo dígitos (quita puntos de miles, comas, espacios, texto, etc.)
+function soloDigitos(valor) {
+  return String(valor || '').replace(/\D/g, '');
+}
+
+// Formatea un número entero con puntos de miles al estilo colombiano: 50000 -> "50.000"
+function formatearMiles(numero) {
+  return String(numero).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
 function formatearFechaLarga(fechaStr) {
   const [y, m, d] = fechaStr.split('-');
   return new Date(+y, +m - 1, +d).toLocaleDateString('es-CO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });

@@ -39,6 +39,26 @@ Este recordatorio se genera teniendo en cuenta el tiempo transcurrido desde tu �
 Lubri Repuestos Yumbo JRC SAS
 Cuidamos la vida de tu motor.`;
 
+// ═══════════ INTERVALOS SUGERIDOS DE PRÓXIMO CONTACTO/SERVICIO ═══════════
+// Valores iniciales por tipo de servicio (clave = valor exacto de #categoria).
+// meses: se suma a la fecha de ingreso para sugerir "Próximo Contacto".
+// km: se suma al kilometraje actual para sugerir el próximo cambio. null = no se sugiere km.
+// EDITABLE: ajustar estos valores según la política real del taller.
+const INTERVALOS_SERVICIO = {
+  // Cambio de aceite convencional: intervalo típico en lubricentros de Colombia.
+  // confirmar con el taller si se maneja aceite sintético (el intervalo sería mayor).
+  'Cambio de Aceite': { meses: 3, km: 5000 },
+  // confirmar con el taller: intervalo de revisión preventiva de frenos.
+  'Revisión de Frenos': { meses: 6, km: 10000 },
+  // confirmar con el taller: alcance de "Mantenimiento General".
+  'Mantenimiento General': { meses: 6, km: 10000 },
+  // El sistema eléctrico no tiene un intervalo por kilometraje estándar.
+  // confirmar con el taller la periodicidad deseada para este chequeo.
+  'Sistema Eléctrico': { meses: 12, km: null },
+  // "Otros" es un cajón de sastre sin intervalo definido: no se sugiere nada.
+  'Otros': null
+};
+
 const HORAS = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 const HORAS_DISPLAY = {
   '07:00': '7:00 AM', '08:00': '8:00 AM', '09:00': '9:00 AM', '10:00': '10:00 AM',
