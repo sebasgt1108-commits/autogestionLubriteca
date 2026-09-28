@@ -39,6 +39,12 @@ Este recordatorio se genera teniendo en cuenta el tiempo transcurrido desde tu �
 Lubri Repuestos Yumbo JRC SAS
 Cuidamos la vida de tu motor.`;
 
+// ═══════════ SESIÓN ═══════════
+// Duración máxima de la sesión (se guarda en localStorage, compartida entre
+// pestañas del mismo navegador). Vence a las 11:59:59.999 p. m. del día en
+// que se inició sesión, o transcurrido este tiempo, lo que ocurra primero.
+const SESSION_MAX_DURACION_MS = 12 * 60 * 60 * 1000; // 12 horas
+
 const HORAS = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
 const HORAS_DISPLAY = {
   '07:00': '7:00 AM', '08:00': '8:00 AM', '09:00': '9:00 AM', '10:00': '10:00 AM',
